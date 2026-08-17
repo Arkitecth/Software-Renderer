@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <random>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -11,8 +12,8 @@ constexpr TGAColor green   = {  0, 255,   0, 255};
 constexpr TGAColor red     = {  0,   0, 255, 255};
 constexpr TGAColor blue    = {255, 128,  64, 255};
 constexpr TGAColor yellow  = {  0, 200, 255, 255};
-constexpr int width  = 800;
-constexpr int height = 800;
+constexpr int width  = 128;
+constexpr int height = 128;
 
 
 std::vector<std::vector<float>> vertices{};
@@ -94,6 +95,7 @@ void drawLine(TGAImage& framebuffer, int ax, int ay, int bx, int by, TGAColor co
 
 
 
+
 void renderModel(TGAImage& framebuffer)
 {
 	for(int i = 0; i < faces.size(); i++)
@@ -121,6 +123,13 @@ void renderModel(TGAImage& framebuffer)
 	}
 }
 
+void triangle(int ax, int ay, int bx, int by, int cx, int cy, TGAImage& framebuffer, TGAColor color)
+{
+	drawLine(framebuffer, ax, ay, bx, by, color); 
+	drawLine(framebuffer, bx, by, cx, cy, color); 
+	drawLine(framebuffer, cx, cy, ax, ay, color); 
+}
+
 
 
 
@@ -144,12 +153,16 @@ int main(int argc, char** argv) {
     // framebuffer.set(cx, cy, white);
     //
     // framebuffer.write_tga_file("framebuffer.tga");
-    //
-	
-    parseFile("./diablo3_pose.obj"); 
-    renderModel(framebuffer);
+    //renderModel(framebuffer);
+    //parseFile("./diablo3_pose.obj"); 
 
-    framebuffer.write_tga_file("diablo.tga");
+    triangle(7, 45, 35, 100, 45, 60, framebuffer, red); 
+
+    triangle(120, 35, 90, 5, 45, 110, framebuffer, white); 
+
+    triangle(115, 83, 80, 90, 85, 120, framebuffer, green); 
+
+    framebuffer.write_tga_file("framebuffer.tga");
 
     return 0;
 }
